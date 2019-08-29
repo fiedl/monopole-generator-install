@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# This script provides instructions on how to install the icecube-simulation framework on macOS.
-# https://github.com/fiedl/hole-ice-install
+# This script provides instructions on how to install the icecube-simulation framework
+# with monopole-generator on macOS.
+# https://github.com/fiedl/monopole-generator-install
 
 # In order to separate out several build steps with github actions, I'm using the
 # `BUILD_STEP` enviornment variable. When using these instructions on your local machine,
@@ -74,14 +75,6 @@ if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "ICECUBE_SIMULATION_BUILD" ]]; t
     svn --username $SVN_ICECUBE_USERNAME --password $SVN_ICECUBE_PASSWORD co $SVN/meta-projects/simulation/releases/$RELEASE/ $ICESIM_ROOT/src
   fi
 
-  # Get the monopole-generator code
-  if [ ! -d $ICESIM_ROOT/src/monopole-generator ]; then
-    if [[ -z $SVN_ICECUBE_USERNAME ]]; then
-      source .secrets.sh
-    fi
-    svn --username $SVN_ICECUBE_USERNAME --password $SVN_ICECUBE_PASSWORD co $SVN/projects/monopole-generator/trunk/ $ICESIM_ROOT/src/monopole-generator
-  fi
-
   # Exclude projects if requested by environment variable,
   # which is used on travis to avoid the execution-time limit
   if [[ ! -z $EXCLUDE_PROJECTS ]]; then
@@ -121,18 +114,17 @@ if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "ICECUBE_SIMULATION_BUILD" ]]; t
   # make -j 2
 
 fi
-if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "CLSIM_WITH_HOLE_ICE" ]]; then
+if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "MONOPOLE_GENERATOR_BUILD" ]]; then
 
-  # Get clsim fork with hole ice
-  # https://github.com/fiedl/clsim
-  rm -r $ICESIM_ROOT/src/clsim
-  git clone https://github.com/fiedl/clsim.git $ICESIM_ROOT/src/clsim
-  cd $ICESIM_ROOT/debug_build
-  make
+  # Get the monopole-generator code
+  if [ ! -d $ICESIM_ROOT/src/monopole-generator ]; then
+    if [[ -z $SVN_ICECUBE_USERNAME ]]; then
+      source .secrets.sh
+    fi
+    svn --username $SVN_ICECUBE_USERNAME --password $SVN_ICECUBE_PASSWORD co $SVN/projects/monopole-generator/trunk/ $ICESIM_ROOT/src/monopole-generator
+    cd $ICESIM_ROOT/debug_build
+    make
+  fi
 
 fi
-
-# Make sure to deactivate opencl kernel caching.
-# See: https://github.com/fiedl/hole-ice-study/issues/15
-export CUDA_CACHE_DISABLE=1
 

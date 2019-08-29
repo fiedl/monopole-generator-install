@@ -1,12 +1,12 @@
-# Hole-Ice-Install
+# Monopole-Generator-Install
 
-[![Build Status](https://github.com/fiedl/hole-ice-install/workflows/CI/badge.svg)](https://github.com/fiedl/hole-ice-install/actions)
+[![Build Status](https://github.com/fiedl/monopole-generator-install/workflows/CI/badge.svg)](https://github.com/fiedl/monopole-generator-install/actions)
 
-This repository provides reproducible install instructions for the hole-ice code and the icecube-simulation framework related to https://github.com/fiedl/hole-ice-study and https://github.com/fiedl/hole-ice-scripts.
+This repository provides reproducible install instructions for the monopole-generator code and the icecube-simulation framework.
 
 ## Installation on macOS
 
-The file [install-on-mac-os.sh](install-on-mac-os.sh) contains instructions on how to install the icecube-simulation framework with the hole-ice additions on macOS.
+The file [install-on-mac-os.sh](install-on-mac-os.sh) contains instructions on how to install the icecube-simulation framework with monopole-generator on macOS.
 
 ## Automated Build Using Vagrant
 
@@ -14,7 +14,7 @@ In order to have the install scriot run on a virtual machine, this repository pr
 
 ```bash
 # Clone this repository
-git clone git@github.com:fiedl/hole-ice-install.git
+git clone git@github.com:fiedl/monopole-generator-install.git
 ```
 
 For the automated code checkout to work, you need to provide svn credentials in a secrets file, which is not included in this repository. Please create the following file and provide credentials there:
@@ -40,8 +40,7 @@ After changing the install scripts, rerun via `vagrant provision` or `vagrant re
 
 ## Additional Resources
 
+- Based on: Install instructions for hole-ice clsim: https://github.com/fiedl/hole-ice-install
 - [IceCube documentation on installing on OS X with Python 2](http://software.icecube.wisc.edu/documentation/projects/cmake/supported_platforms/osx.html)
 - [Installing icecube-simulation V05-00-07 with Python 2 on macOS Sierra](https://github.com/fiedl/hole-ice-study/blob/master/notes/2016-11-15_Installing_IceSim_on_macOS_Sierra.md)
 - [Installing icecube-simulation V05-00-07 with Python 2 in Zeuthen](https://github.com/fiedl/hole-ice-study/blob/master/notes/2018-01-23_Installing_IceSim_in_Zeuthen.md)
-- Hole-ice study: https://github.com/fiedl/hole-ice-study
-- Hole-ice example scripts: https://github.com/fiedl/hole-ice-scripts

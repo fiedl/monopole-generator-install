@@ -23,7 +23,10 @@ jobs:
         SVN: ${{ secrets.SVN }}
         SVN_ICECUBE_USERNAME: icecube
         SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
-    - name: Build with clsim fork supporting hole ice
+    - name: Build icecube-simulation with monopole-generator
       run: bash -v -e ./install-on-mac-os.sh
       env:
-        BUILD_STEP: CLSIM_WITH_HOLE_ICE
+        BUILD_STEP: MONOPOLE_GENERATOR_BUILD
+        SVN: ${{ secrets.SVN }}
+        SVN_ICECUBE_USERNAME: icecube
+        SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
