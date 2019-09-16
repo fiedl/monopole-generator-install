@@ -30,3 +30,11 @@ jobs:
         SVN: ${{ secrets.SVN }}
         SVN_ICECUBE_USERNAME: icecube
         SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
+    - name: Build test binaries
+      run: bash -v -e ./install-on-mac-os.sh
+      env:
+        BUILD_STEP: BUILD_TEST_BINS
+    - name: Run monopole-generator tests
+      run: bash -v -e ./install-on-mac-os.sh
+      env:
+        BUILD_STEP: MONOPOLE_GENERATOR_TESTS

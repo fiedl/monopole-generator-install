@@ -127,4 +127,16 @@ if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "MONOPOLE_GENERATOR_BUILD" ]]; t
   fi
 
 fi
+if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "BUILD_TEST_BINS" ]]; then
+
+  cd $ICESIM_ROOT/debug_build
+  make test-bins
+
+fi
+if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "MONOPOLE_GENERATOR_TESTS" ]]; then
+
+  cd $ICESIM_ROOT/debug_build
+  bin/monopole-generator-test -a
+
+fi
 
