@@ -123,6 +123,7 @@ if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "MONOPOLE_GENERATOR_BUILD" ]]; t
     fi
     svn --username $SVN_ICECUBE_USERNAME --password $SVN_ICECUBE_PASSWORD co $SVN/projects/monopole-generator/trunk/ $ICESIM_ROOT/src/monopole-generator
     cd $ICESIM_ROOT/debug_build
+    cmake -D CMAKE_BUILD_TYPE=Debug -D SYSTEM_PACKAGES=true -D CMAKE_BUILD_TYPE:STRING=Debug ../src
     make
   fi
 
