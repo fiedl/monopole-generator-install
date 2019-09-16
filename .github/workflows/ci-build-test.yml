@@ -14,34 +14,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Install required system packages
+    - name: Install and build
       run: bash -v -e ./install-on-mac-os.sh
       env:
-        BUILD_STEP: SYSTEM_PACKAGES
         RELEASE: ${{ matrix.release }}
-    - name: Build icecube-simulation framework
-      run: bash -v -e ./install-on-mac-os.sh
-      env:
-        BUILD_STEP: ICECUBE_SIMULATION_BUILD
         SVN: ${{ secrets.SVN }}
         SVN_ICECUBE_USERNAME: icecube
         SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
-        RELEASE: ${{ matrix.release }}
-    - name: Build icecube-simulation with monopole-generator
-      run: bash -v -e ./install-on-mac-os.sh
-      env:
-        BUILD_STEP: MONOPOLE_GENERATOR_BUILD
-        SVN: ${{ secrets.SVN }}
-        SVN_ICECUBE_USERNAME: icecube
-        SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
-        RELEASE: ${{ matrix.release }}
-    - name: Build test binaries
-      run: bash -v -e ./install-on-mac-os.sh
-      env:
-        BUILD_STEP: BUILD_TEST_BINS
-        RELEASE: ${{ matrix.release }}
-    - name: Run monopole-generator tests
-      run: bash -v -e ./install-on-mac-os.sh
-      env:
-        BUILD_STEP: MONOPOLE_GENERATOR_TESTS
-        RELEASE: ${{ matrix.release }}
