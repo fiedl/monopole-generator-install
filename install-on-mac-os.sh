@@ -55,15 +55,22 @@ fi
 # This is where the icecube software will live
 export ICECUBE_ROOT="$HOME/icecube/software"
 
-# If you want to use a release:
-export RELEASE=V06-01-01
+# If you would like to use a release, set the `RELEASE` environment variable
+# to the appropriate icecube-simulation release number.
+#
+#     export RELEASE=V06-01-01
+#
+# If you would like to use the current `svn trunk`, set the `RELEASE` environment
+# variable to "trunk".
+#
+#     export RELEASE=trunk
+#
+# In this repository, the `RELEASE` environment varibale is set by the
+# github-actions build matrix.
+[[ -z "$RELEASE" ]] && echo "Please set the RELEASE environment variable, e.g.: 'export RELEASE=V06-01-01' or 'export RELEASE=trunk'." && exit 1
+
 export ICESIM_ROOT=$ICECUBE_ROOT/icecube-simulation-$RELEASE
 export ICESIM=$ICESIM_ROOT/debug_build
-
-# # If you want to use the trunk:
-# export CURRENT_TRUNK=2016-02-02
-# export ICESIM_ROOT=$ICECUBE_ROOT/simulation-trunk-$CURRENT_TRUNK
-# export ICESIM=$ICESIM_ROOT/debug_build
 
 if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "ICECUBE_SIMULATION_BUILD" ]]; then
 
@@ -73,7 +80,11 @@ if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "ICECUBE_SIMULATION_BUILD" ]]; t
     if [[ -z $SVN_ICECUBE_USERNAME ]]; then
       source .secrets.sh
     fi
-    svn --username $SVN_ICECUBE_USERNAME --password $SVN_ICECUBE_PASSWORD co $SVN/meta-projects/simulation/releases/$RELEASE/ $ICESIM_ROOT/src
+    if [[ $RELEASE = "trunk" ]]; then
+      svn --username $SVN_ICECUBE_USERNAME --password $SVN_ICECUBE_PASSWORD co $SVN/meta-projects/simulation/trunk/ $ICESIM_ROOT/src
+    else
+      svn --username $SVN_ICECUBE_USERNAME --password $SVN_ICECUBE_PASSWORD co $SVN/meta-projects/simulation/releases/$RELEASE/ $ICESIM_ROOT/src
+    fi
   fi
 
   # Exclude projects if requested by environment variable,
@@ -84,21 +95,25 @@ if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "ICECUBE_SIMULATION_BUILD" ]]; t
     done
   fi
 
-  # Patch cmake file to find pymalloc version of python installed by homebrew
-  # https://github.com/fiedl/hole-ice-install/issues/1
-  patch --force $ICESIM_ROOT/src/cmake/tools/python.cmake < ./patches/python.cmake.patch
+  if [[ $RELEASE = "V06-01-01" ]]; then
 
-  # Patch muongun pybindings to add missing static cast
-  # https://github.com/fiedl/hole-ice-install/issues/2
-  if [[ -d $ICESIM_ROOT/src/MuonGun ]]; then
-    patch --force $ICESIM_ROOT/src/MuonGun/private/pybindings/histogram.cxx < ./patches/muongun-histogram.cxx.patch
+    # Patch cmake file to find pymalloc version of python installed by homebrew
+    # https://github.com/fiedl/hole-ice-install/issues/1
+    patch --force $ICESIM_ROOT/src/cmake/tools/python.cmake < ./patches/python.cmake.patch
+
+    # Patch muongun pybindings to add missing static cast
+    # https://github.com/fiedl/hole-ice-install/issues/2
+    if [[ -d $ICESIM_ROOT/src/MuonGun ]]; then
+      patch --force $ICESIM_ROOT/src/MuonGun/private/pybindings/histogram.cxx < ./patches/muongun-histogram.cxx.patch
+    fi
+
+    # Patch cmake file to drop requirement of the boost_signals library,
+    # which has been dropped in boost 1.69
+    # https://github.com/fiedl/hole-ice-install/issues/3
+    # https://code.icecube.wisc.edu/projects/icecube/ticket/2232
+    patch --force $ICESIM_ROOT/src/cmake/tools/boost.cmake < ./patches/boost.cmake.patch
+
   fi
-
-  # Patch cmake file to drop requirement of the boost_signals library,
-  # which has been dropped in boost 1.69
-  # https://github.com/fiedl/hole-ice-install/issues/3
-  # https://code.icecube.wisc.edu/projects/icecube/ticket/2232
-  patch --force $ICESIM_ROOT/src/cmake/tools/boost.cmake < ./patches/boost.cmake.patch
 
   # Build the release (debug)
   mkdir -p $ICESIM_ROOT/debug_build

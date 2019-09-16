@@ -9,6 +9,7 @@ jobs:
     strategy:
       matrix:
         platform: [macOS-10.14]
+        release: [V06-01-01, trunk]
 
     steps:
     - uses: actions/checkout@v1
@@ -23,6 +24,7 @@ jobs:
         SVN: ${{ secrets.SVN }}
         SVN_ICECUBE_USERNAME: icecube
         SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
+        RELEASE: ${{ matrix.release }}
     - name: Build icecube-simulation with monopole-generator
       run: bash -v -e ./install-on-mac-os.sh
       env:
@@ -30,11 +32,14 @@ jobs:
         SVN: ${{ secrets.SVN }}
         SVN_ICECUBE_USERNAME: icecube
         SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
+        RELEASE: ${{ matrix.release }}
     - name: Build test binaries
       run: bash -v -e ./install-on-mac-os.sh
       env:
         BUILD_STEP: BUILD_TEST_BINS
+        RELEASE: ${{ matrix.release }}
     - name: Run monopole-generator tests
       run: bash -v -e ./install-on-mac-os.sh
       env:
         BUILD_STEP: MONOPOLE_GENERATOR_TESTS
+        RELEASE: ${{ matrix.release }}
