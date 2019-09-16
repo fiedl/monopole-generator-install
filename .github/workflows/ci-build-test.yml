@@ -17,6 +17,7 @@ jobs:
       run: bash -v -e ./install-on-mac-os.sh
       env:
         BUILD_STEP: SYSTEM_PACKAGES
+        RELEASE: ${{ matrix.release }}
     - name: Build icecube-simulation framework
       run: bash -v -e ./install-on-mac-os.sh
       env:
