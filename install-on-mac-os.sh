@@ -38,7 +38,8 @@ if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "SYSTEM_PACKAGES" ]]; then
   pip install scipy
 
   # Install packages needed for building icecube-simulation
-  brew install cmake gsl cfitsio
+  brew list cmake || brew install cmake
+  brew install gsl cfitsio
 
   # Install qt5 needed for steamshovel event display viewer
   brew info qt
