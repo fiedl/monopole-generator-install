@@ -7,6 +7,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     strategy:
+      fail-fast: false
       matrix:
         platform: [macOS-10.14]
         release: [V06-01-01, trunk]
