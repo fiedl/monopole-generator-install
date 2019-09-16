@@ -24,7 +24,7 @@ if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "SYSTEM_PACKAGES" ]]; then
 
   # Install python 3
   brew info python
-  brew install python
+  brew list python || brew install python
 
   # Install boost with python bindings
   brew info boost
