@@ -41,6 +41,14 @@ export ICECUBE_ROOT="$HOME/icecube/software"
 export ICESIM_ROOT=$ICECUBE_ROOT/icecube-simulation-$RELEASE
 export ICESIM=$ICESIM_ROOT/debug_build
 
+if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "ICECUBE_SIMULATION_BUILD" ]]; then
+
+  # Following the generic icecube-simulation install instructions from:
+  # https://github.com/fiedl/icecube-simulation-install
+
+  curl https://raw.githubusercontent.com/fiedl/icecube-simulation-install/master/install.sh | bash -v -e
+
+fi
 if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "MONOPOLE_GENERATOR_BUILD" ]]; then
 
   # Get the monopole-generator code

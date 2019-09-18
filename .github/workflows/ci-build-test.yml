@@ -15,8 +15,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: "Checkout and build icecube-simulation framework"
-      run: curl https://raw.githubusercontent.com/fiedl/icecube-simulation-install/master/install.sh | sudo -E bash -v -e
+      run: bash -v -e ./install.sh
       env:
+        BUILD_STEP: ICECUBE_SIMULATION_BUILD
         RELEASE: ${{ matrix.release }}
         PLATFORM: ${{ matrix.platform }}
         SVN: ${{ secrets.SVN }}
