@@ -9,26 +9,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macOS-10.14]
+        platform: [ubuntu-18.04, macOS-10.14]
         release: [V06-01-01, trunk]
 
     steps:
     - uses: actions/checkout@v1
-    - name: Install required system packages
-      run: bash -v -e ./install-on-mac-os.sh
+    - name: "Checkout and build icecube-simulation framework"
+      run: curl https://raw.githubusercontent.com/fiedl/icecube-simulation-install/master/install.sh | sudo bash -v -e
       env:
-        BUILD_STEP: SYSTEM_PACKAGES
         RELEASE: ${{ matrix.release }}
-    - name: Build icecube-simulation framework
-      run: bash -v -e ./install-on-mac-os.sh
-      env:
-        BUILD_STEP: ICECUBE_SIMULATION_BUILD
+        PLATFORM: ${{ matrix.platform }}
         SVN: ${{ secrets.SVN }}
         SVN_ICECUBE_USERNAME: icecube
         SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
-        RELEASE: ${{ matrix.release }}
     - name: Build icecube-simulation with monopole-generator
-      run: bash -v -e ./install-on-mac-os.sh
+      run: bash -v -e ./install.sh
       env:
         BUILD_STEP: MONOPOLE_GENERATOR_BUILD
         SVN: ${{ secrets.SVN }}
@@ -36,12 +31,12 @@ jobs:
         SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
         RELEASE: ${{ matrix.release }}
     - name: Build test binaries
-      run: bash -v -e ./install-on-mac-os.sh
+      run: bash -v -e ./install.sh
       env:
         BUILD_STEP: BUILD_TEST_BINS
         RELEASE: ${{ matrix.release }}
     - name: Run monopole-generator tests
-      run: bash -v -e ./install-on-mac-os.sh
+      run: bash -v -e ./install.sh
       env:
         BUILD_STEP: MONOPOLE_GENERATOR_TESTS
         RELEASE: ${{ matrix.release }}
