@@ -4,9 +4,9 @@
 
 This repository provides reproducible install instructions for the monopole-generator code and the icecube-simulation framework.
 
-## Installation on macOS
+## Installation
 
-The file [install-on-mac-os.sh](install-on-mac-os.sh) contains instructions on how to install the icecube-simulation framework with monopole-generator on macOS.
+The file [install.sh](install.sh) contains instructions on how to install the icecube-simulation framework with monopole-generator on macOS and ubuntu.
 
 ## Automated Build Using Vagrant
 
