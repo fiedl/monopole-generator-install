@@ -72,6 +72,7 @@ fi
 if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "MONOPOLE_GENERATOR_TESTS" ]]; then
 
   cd $ICESIM_ROOT/debug_build
+  source env-shell.sh
   bin/monopole-generator-test -a
 
 fi
