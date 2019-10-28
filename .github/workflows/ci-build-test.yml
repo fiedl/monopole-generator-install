@@ -9,12 +9,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        release: [V00-00-00-RC2, stable, trunk]
         platform: [ubuntu-18.04, macOS-10.14]
-        release: [V06-01-01, trunk]
 
     steps:
     - uses: actions/checkout@v1
-    - name: "Checkout and build icecube-simulation framework"
+    - name: "Checkout and build icecube-combo framework"
       run: bash -v -e ./install.sh
       env:
         BUILD_STEP: ICECUBE_SIMULATION_BUILD
@@ -23,7 +23,7 @@ jobs:
         SVN: ${{ secrets.SVN }}
         SVN_ICECUBE_USERNAME: icecube
         SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
-    - name: Build icecube-simulation with monopole-generator
+    - name: Build icecube-combo with monopole-generator
       run: bash -v -e ./install.sh
       env:
         BUILD_STEP: MONOPOLE_GENERATOR_BUILD

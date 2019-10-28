@@ -2,11 +2,11 @@
 
 [![Build Status](https://github.com/fiedl/monopole-generator-install/workflows/CI/badge.svg)](https://github.com/fiedl/monopole-generator-install/actions)
 
-This repository provides reproducible install instructions for the monopole-generator code and the icecube-simulation framework.
+This repository provides reproducible install instructions for the monopole-generator code and the icecube-combo framework.
 
 ## Installation
 
-The file [install.sh](install.sh) contains instructions on how to install the icecube-simulation framework with monopole-generator on macOS and ubuntu.
+The file [install.sh](install.sh) contains instructions on how to install the icecube-combo framework with monopole-generator on macOS and ubuntu.
 
 ## Automated Build Using Vagrant
 
