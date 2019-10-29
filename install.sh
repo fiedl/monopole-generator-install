@@ -46,7 +46,7 @@ if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "ICECUBE_SIMULATION_BUILD" ]]; t
   # Following the generic icecube-combo install instructions from:
   # https://github.com/fiedl/icecube-combo-install
 
-  curl https://raw.githubusercontent.com/fiedl/icecube-combo-install/master/install.sh | bash -v -e
+  curl https://raw.githubusercontent.com/fiedl/icecube-combo-install/make-with-env-shell/install.sh | bash -v -e
 
 fi
 if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "MONOPOLE_GENERATOR_BUILD" ]]; then
@@ -59,21 +59,20 @@ if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "MONOPOLE_GENERATOR_BUILD" ]]; t
     svn --username $SVN_ICECUBE_USERNAME --password $SVN_ICECUBE_PASSWORD co $SVN/projects/monopole-generator/trunk/ $ICECUBE_COMBO_ROOT/src/monopole-generator
     cd $ICECUBE_COMBO_ROOT/debug_build
     cmake -D CMAKE_BUILD_TYPE=Debug -D SYSTEM_PACKAGES=true -D CMAKE_BUILD_TYPE:STRING=Debug ../src
-    make
+    ./env-shell.sh make
   fi
 
 fi
 if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "BUILD_TEST_BINS" ]]; then
 
   cd $ICECUBE_COMBO_ROOT/debug_build
-  make test-bins
+  ./env-shell.sh make test-bins
 
 fi
 if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "MONOPOLE_GENERATOR_TESTS" ]]; then
 
   cd $ICECUBE_COMBO_ROOT/debug_build
-  source env-shell.sh
-  bin/monopole-generator-test -a
+  ./env-shell.sh bin/monopole-generator-test -a
 
 fi
 
