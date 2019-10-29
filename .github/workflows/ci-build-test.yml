@@ -36,7 +36,12 @@ jobs:
       env:
         BUILD_STEP: BUILD_TEST_BINS
         RELEASE: ${{ matrix.release }}
-    - name: Run monopole-generator tests
+    - name: Run monopole-generator python tests
+      run: bash -v -e ./install.sh
+      env:
+        BUILD_STEP: MONOPOLE_GENERATOR_PYTHON_TESTS
+        RELEASE: ${{ matrix.release }}
+    - name: Run monopole-generator cpp tests
       run: bash -v -e ./install.sh
       env:
         BUILD_STEP: MONOPOLE_GENERATOR_TESTS
