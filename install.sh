@@ -72,8 +72,8 @@ fi
 if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "MONOPOLE_GENERATOR_PYTHON_TESTS" ]]; then
 
   cd $ICECUBE_COMBO_ROOT/debug_build
-  ./env-shell.sh ../src/monopole-generator/resources/test/test_monopole_generator.py
-  ./env-shell.sh ../src/monopole-generator/resources/test/test_monopole_propagator.py
+  ./env-shell.sh python ../src/monopole-generator/resources/test/test_monopole_generator.py
+  ./env-shell.sh python ../src/monopole-generator/resources/test/test_monopole_propagator.py
 
 fi
 if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "MONOPOLE_GENERATOR_TESTS" ]]; then
