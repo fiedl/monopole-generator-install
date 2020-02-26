@@ -28,11 +28,11 @@ jobs:
       run: bash -v -e ./install.sh
       env:
         BUILD_STEP: MONOPOLE_GENERATOR_BUILD
+        RELEASE: ${{ matrix.release }}
         PLATFORM: ${{ matrix.platform }}
         SVN: ${{ secrets.SVN }}
         SVN_ICECUBE_USERNAME: icecube
         SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
-        RELEASE: ${{ matrix.release }}
         MONOPOLE_GENERATOR_GIT_SOURCE: ${{ secrets.MONOPOLE_GENERATOR_GIT_SOURCE }}
         COMBO_GIT_SOURCE: ${{ secrets.COMBO_GIT_SOURCE }}
     - name: Build test binaries
@@ -40,13 +40,31 @@ jobs:
       env:
         BUILD_STEP: BUILD_TEST_BINS
         RELEASE: ${{ matrix.release }}
+        PLATFORM: ${{ matrix.platform }}
+        SVN: ${{ secrets.SVN }}
+        SVN_ICECUBE_USERNAME: icecube
+        SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
+        MONOPOLE_GENERATOR_GIT_SOURCE: ${{ secrets.MONOPOLE_GENERATOR_GIT_SOURCE }}
+        COMBO_GIT_SOURCE: ${{ secrets.COMBO_GIT_SOURCE }}
     - name: Run monopole-generator python tests
       run: bash -v -e ./install.sh
       env:
         BUILD_STEP: MONOPOLE_GENERATOR_PYTHON_TESTS
         RELEASE: ${{ matrix.release }}
+        PLATFORM: ${{ matrix.platform }}
+        SVN: ${{ secrets.SVN }}
+        SVN_ICECUBE_USERNAME: icecube
+        SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
+        MONOPOLE_GENERATOR_GIT_SOURCE: ${{ secrets.MONOPOLE_GENERATOR_GIT_SOURCE }}
+        COMBO_GIT_SOURCE: ${{ secrets.COMBO_GIT_SOURCE }}
     - name: Run monopole-generator cpp tests
       run: bash -v -e ./install.sh
       env:
         BUILD_STEP: MONOPOLE_GENERATOR_TESTS
         RELEASE: ${{ matrix.release }}
+        PLATFORM: ${{ matrix.platform }}
+        SVN: ${{ secrets.SVN }}
+        SVN_ICECUBE_USERNAME: icecube
+        SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
+        MONOPOLE_GENERATOR_GIT_SOURCE: ${{ secrets.MONOPOLE_GENERATOR_GIT_SOURCE }}
+        COMBO_GIT_SOURCE: ${{ secrets.COMBO_GIT_SOURCE }}
