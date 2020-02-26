@@ -55,7 +55,7 @@ fi
 if [[ -z "$BUILD_STEP" ]] || [[ $BUILD_STEP = "BUILD_TEST_BINS" ]]; then
 
   cd $ICECUBE_COMBO_BUILD
-  ./env-shell.sh make test-bins
+  ./env-shell.sh bash -c "env && cd monopole-generator && make monopole-generator-test"
 
 fi
 if [[ -z "$BUILD_STEP" ]] || [[ $BUILD_STEP = "MONOPOLE_GENERATOR_PYTHON_TESTS" ]]; then
