@@ -20,65 +20,54 @@ export PATH=/usr/local/sbin:$PATH
 # Python path when installed via homebrew
 export PATH=/usr/local/opt/python/libexec/bin:$PATH
 
+# Get repo paths from secrets file locally
+if [[ -z $SVN_ICECUBE_USERNAME ]] && [[ -z $COMBO_GIT_SOURCE ]]; then
+  source .secrets.sh
+fi
 
 # This is where the icecube software will live
 export ICECUBE_ROOT="$HOME/icecube/software"
+export ICECUBE_COMBO_ROOT=$ICECUBE_ROOT/combo
+export ICECUBE_COMBO_SRC=$ICECUBE_COMBO_ROOT/src
+export ICECUBE_COMBO_BUILD=$ICECUBE_COMBO_ROOT/build
 
-# If you would like to use a release, set the `RELEASE` environment variable
-# to the appropriate icecube-combo release number.
-#
-#     export RELEASE=V00-00-00-RC2
-#
-# If you would like to use the current `svn trunk`, set the `RELEASE` environment
-# variable to "trunk" or "stable".
-#
-#     export RELEASE=trunk
-#
-# In this repository, the `RELEASE` environment varibale is set by the
-# github-actions build matrix.
-[[ -z "$RELEASE" ]] && echo "Please set the RELEASE environment variable, e.g.: 'export RELEASE=V00-00-00-RC2' or 'export RELEASE=trunk' or 'export RELEASE=stable'." && exit 1
-
-export ICECUBE_COMBO_ROOT=$ICECUBE_ROOT/icecube-combo-$RELEASE
-export ICECUBE_COMBO=$ICECUBE_COMBO_ROOT/debug_build
-
-if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "ICECUBE_SIMULATION_BUILD" ]]; then
+if [[ -z "$BUILD_STEP" ]] || [[ $BUILD_STEP = "ICECUBE_SIMULATION_BUILD" ]]; then
 
   # Following the generic icecube-combo install instructions from:
   # https://github.com/fiedl/icecube-combo-install
 
-  curl https://raw.githubusercontent.com/fiedl/icecube-combo-install/make-with-env-shell/install.sh | bash -v -e
+  export GIT_REPO_URL=$COMBO_GIT_SOURCE
+  curl https://raw.githubusercontent.com/fiedl/icecube-combo-install/master/install.sh | bash -v -e
 
 fi
-if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "MONOPOLE_GENERATOR_BUILD" ]]; then
+if [[ -z "$BUILD_STEP" ]] || [[ $BUILD_STEP = "MONOPOLE_GENERATOR_BUILD" ]]; then
 
   # Get the monopole-generator code
-  if [ ! -d $ICECUBE_COMBO_ROOT/src/monopole-generator ]; then
-    if [[ -z $SVN_ICECUBE_USERNAME ]]; then
-      source .secrets.sh
-    fi
-    svn --username $SVN_ICECUBE_USERNAME --password $SVN_ICECUBE_PASSWORD co $SVN/projects/monopole-generator/trunk/ $ICECUBE_COMBO_ROOT/src/monopole-generator
-    cd $ICECUBE_COMBO_ROOT/debug_build
-    cmake -D CMAKE_BUILD_TYPE=Debug -D SYSTEM_PACKAGES=true -D CMAKE_BUILD_TYPE:STRING=Debug ../src
-    ./env-shell.sh make
+  if [ ! -d $ICECUBE_COMBO_SRC/monopole-generator ]; then
+    git clone $MONOPOLE_GENERATOR_GIT_SOURCE $ICECUBE_COMBO_SRC/monopole-generator
   fi
 
-fi
-if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "BUILD_TEST_BINS" ]]; then
+  cd $ICECUBE_COMBO_BUILD
+  cmake -D CMAKE_BUILD_TYPE=Debug -D SYSTEM_PACKAGES=true -D CMAKE_BUILD_TYPE:STRING=Debug $ICECUBE_COMBO_SRC
+  ./env-shell.sh make
 
-  cd $ICECUBE_COMBO_ROOT/debug_build
+fi
+if [[ -z "$BUILD_STEP" ]] || [[ $BUILD_STEP = "BUILD_TEST_BINS" ]]; then
+
+  cd $ICECUBE_COMBO_BUILD
   ./env-shell.sh make test-bins
 
 fi
-if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "MONOPOLE_GENERATOR_PYTHON_TESTS" ]]; then
+if [[ -z "$BUILD_STEP" ]] || [[ $BUILD_STEP = "MONOPOLE_GENERATOR_PYTHON_TESTS" ]]; then
 
-  cd $ICECUBE_COMBO_ROOT/debug_build
+  cd $ICECUBE_COMBO_BUILD
   ./env-shell.sh python ../src/monopole-generator/resources/test/test_monopole_generator.py
   ./env-shell.sh python ../src/monopole-generator/resources/test/test_monopole_propagator.py
 
 fi
-if [[ ! -z "$BUILD_STEP" ]] && [[ $BUILD_STEP = "MONOPOLE_GENERATOR_TESTS" ]]; then
+if [[ -z "$BUILD_STEP" ]] || [[ $BUILD_STEP = "MONOPOLE_GENERATOR_TESTS" ]]; then
 
-  cd $ICECUBE_COMBO_ROOT/debug_build
+  cd $ICECUBE_COMBO_BUILD
   ./env-shell.sh bin/monopole-generator-test -a
 
 fi

@@ -10,7 +10,7 @@ The file [install.sh](install.sh) contains instructions on how to install the ic
 
 ## Automated Build Using Vagrant
 
-In order to have the install scriot run on a virtual machine, this repository provides [Vagrant](http://vagrantup.com) instructions in the [Vagrantfile](Vagrantfile).
+In order to have the install script run on a virtual machine, this repository provides [Vagrant](http://vagrantup.com) instructions in the [Vagrantfile](Vagrantfile).
 
 ```bash
 # Clone this repository
@@ -21,9 +21,8 @@ For the automated code checkout to work, you need to provide svn credentials in 
 
 ```bash
 # .secrets.sh
-export SVN="our svn url"
-export SVN_ICECUBE_USERNAME="our svn username"
-export SVN_ICECUBE_PASSWORD="our svn password"
+export COMBO_GIT_SOURCE="https://username:token@github.com/.../IceTrayCombo.git"
+export MONOPOLE_GENERATOR_GIT_SOURCE="https://username:token@github.com/.../monopole-generator.git"
 ```
 
 After that, install and run vagrant:
@@ -40,6 +39,7 @@ After changing the install scripts, rerun via `vagrant provision` or `vagrant re
 
 ## Additional Resources
 
+- https://github.com/fiedl/icecube-combo-install
 - Based on: Install instructions for hole-ice clsim: https://github.com/fiedl/hole-ice-install
 - [IceCube documentation on installing on OS X with Python 2](http://software.icecube.wisc.edu/documentation/projects/cmake/supported_platforms/osx.html)
 - [Installing icecube-simulation V05-00-07 with Python 2 on macOS Sierra](https://github.com/fiedl/hole-ice-study/blob/master/notes/2016-11-15_Installing_IceSim_on_macOS_Sierra.md)

@@ -9,7 +9,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        release: [V00-00-00-RC2, stable, trunk]
         platform: [ubuntu-18.04, macOS-10.14]
 
     steps:
@@ -23,14 +22,19 @@ jobs:
         SVN: ${{ secrets.SVN }}
         SVN_ICECUBE_USERNAME: icecube
         SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
+        MONOPOLE_GENERATOR_GIT_SOURCE: ${{ secrets.MONOPOLE_GENERATOR_GIT_SOURCE }}
+        COMBO_GIT_SOURCE: ${{ secrets.COMBO_GIT_SOURCE }}
     - name: Build icecube-combo with monopole-generator
       run: bash -v -e ./install.sh
       env:
         BUILD_STEP: MONOPOLE_GENERATOR_BUILD
+        PLATFORM: ${{ matrix.platform }}
         SVN: ${{ secrets.SVN }}
         SVN_ICECUBE_USERNAME: icecube
         SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
         RELEASE: ${{ matrix.release }}
+        MONOPOLE_GENERATOR_GIT_SOURCE: ${{ secrets.MONOPOLE_GENERATOR_GIT_SOURCE }}
+        COMBO_GIT_SOURCE: ${{ secrets.COMBO_GIT_SOURCE }}
     - name: Build test binaries
       run: bash -v -e ./install.sh
       env:
