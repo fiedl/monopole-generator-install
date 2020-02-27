@@ -44,7 +44,7 @@ if [[ -z "$BUILD_STEP" ]] || [[ $BUILD_STEP = "MONOPOLE_GENERATOR_BUILD" ]]; the
 
   # Get the monopole-generator code
   if [ ! -d $ICECUBE_COMBO_SRC/monopole-generator ]; then
-    git clone $MONOPOLE_GENERATOR_GIT_SOURCE $ICECUBE_COMBO_SRC/monopole-generator
+    git clone $MONOPOLE_GENERATOR_GIT_SOURCE $ICECUBE_COMBO_SRC/monopole-generator --branch fiedl/review-fixes
   fi
 
   cd $ICECUBE_COMBO_BUILD
